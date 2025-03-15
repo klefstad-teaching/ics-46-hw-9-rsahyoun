@@ -9,16 +9,32 @@ void error(string word1, string word2, string msg)
 
 bool edit_distance_within(const std::string& str1, const std::string& str2, int d)
 {
+    if(str1 == str2)
+    {
+        return true;
+    }
+
     if(abs(int(str1.length()) - int(str2.length())) > d)
     {
         return false;
     }
 
-    return is_adjacent(str1, str2);
+    if(d == 1)
+    {
+        return is_adjacent(str1, str2);
+    }
+
+    return false;
 }
 
 bool is_adjacent(const string& word1, const string& word2)
 {
+
+    if(word1 == word2)
+    {
+        return true;
+    }
+
     if(abs(int(word1.length()) - int(word2.length())) > 1)
     {
         return false;
@@ -87,6 +103,11 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
         return {begin_word};
     }
 
+    if (word_list.find(begin_word) == word_list.end() || word_list.find(end_word) == word_list.end()) 
+    {
+        return {};
+    }
+
     queue<vector<string>> ladder_queue;
     ladder_queue.push({begin_word});
 
@@ -126,9 +147,14 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
 
 }
 
-void load_words(set<string> & word_list, const string& file_name)
+void load_words(set<string>& word_list, const string& file_name)
 {
     ifstream file(file_name);
+
+    if (!file) 
+    {
+        throw runtime_error("Could not open dictionary file");
+    }
    
     string word;
     while(file >> word)
@@ -146,16 +172,16 @@ void print_word_ladder(const vector<string>& ladder)
         return;
     }
 
-    cout << "Word ladder (" << ladder.size() << " steps):" << endl;
+    cout << "Word ladder found: ";
     for(size_t i = 0; i < ladder.size(); ++i)
     {
         cout << ladder[i];
         if(i < ladder.size() - 1)
         {
-            cout << "-> ";
+            cout << " ";
         }
     }
-    cout << endl;
+    cout << " " <<endl;
 }
 
 void verify_word_ladder()

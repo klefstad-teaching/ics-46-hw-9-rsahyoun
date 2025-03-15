@@ -9,6 +9,9 @@ vector<int> dijkstra_shortest_path(const Graph& G, int source, vector<int>& prev
 
     priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
 
+    distances[source] = 0;
+    pq.push({0, source});
+
     while(!pq.empty())
     {
         int u = pq.top().second;
@@ -52,9 +55,11 @@ vector<int> extract_shortest_path(const vector<int>& distances, const vector<int
         return path;
     }
 
-    for(int i = destination; i != -1; i = previous[i])
+    int curr = destination;
+    while(curr != -1)
     {
-        path.push_back(i);
+        path.push_back(curr);
+        curr = previous[curr];
     }
 
     reverse(path.begin(), path.end());
@@ -77,9 +82,10 @@ void print_path(const vector<int>& v, int total)
         cout << v[i];
         if(i < v.size() - 1)
         { 
-            cout << " -> ";
+            cout << " ";
         }
     }
 
-    cout << endl;
+    cout << " " << endl;
+    cout << "Total cost is " << total << endl;
 }
