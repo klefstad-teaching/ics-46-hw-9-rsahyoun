@@ -125,7 +125,12 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
 {
     if(begin_word == end_word)
     {
-        return {begin_word};
+        if (word_list.find(begin_word) != word_list.end()) 
+        {
+            return {begin_word};
+        }
+        
+        return {}; 
     }
 
     if (word_list.find(begin_word) == word_list.end() || word_list.find(end_word) == word_list.end()) 
